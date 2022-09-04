@@ -7,12 +7,7 @@
                 </div>
             </div>
             <div class="col-md-12">
-                <div class="col-md-7">
-                    <input type="text" class="form-control">
-                    <a href="#" class="btn-success btn btn-sm create-forum" @click="toggleModal">Create Forum</a>
-                </div>
-                <div class="col-md-5">
-                </div>
+                <a href="#" class="btn-success btn btn-sm create-forum" @click="toggleModal">Create Forum</a>
             </div>
         </div>
         <div class="container">
@@ -81,9 +76,8 @@ export default {
             commentList: []
         };
     },
-    components: {ForumCreate, CommentCreate, Confirmation, CommentView},
+    components: { ForumCreate, CommentCreate, Confirmation, CommentView },
     beforeCreate() {
-        console.log('state',this.$store.state.loggedIn);
         if (!this.$store.state.loggedIn) {
             this.$router.push({name: "login"});
         }
@@ -95,17 +89,15 @@ export default {
         toggleModal() {
             this.showModal = !this.showModal;
             this.forums();
-            console.log(this.showModal);
         },
         toggleComment(forum_id) {
             this.showComment = !this.showComment;
             this.forum_id = forum_id;
             this.forums();
-            console.log(this.forum_id);
         },
         toggleCommentView(forum_id) {
             this.showCommentView = !this.showCommentView;
-
+            this.hiddenClass = 'hidden'
             if (this.showCommentView) {
                 var postData = {
                     forum_id: forum_id,
@@ -126,9 +118,8 @@ export default {
                         axiosConfig
                     )
                     .then((res) => {
+                        this.hiddenClass = ''
                         this.commentList = res.data.data
-                        // console.log("RESPONSE RECEIVED: ", res.data.data);
-                        this.closeComment();
                     })
                     .catch((err) => {
                         console.log("AXIOS ERROR: ", err);
@@ -136,7 +127,6 @@ export default {
             }
             this.forum_id = forum_id;
             this.forums();
-            console.log(this.forum_id);
         },
         toggleConfirmation(confirmStatus) {
             this.showConfirmation = !this.showConfirmation;
@@ -154,8 +144,6 @@ export default {
             } else {
                 this.alertMessage = "Succesfully rejected";
             }
-
-            console.log('confirmation type ', this.confirmationType);
         },
         approveForum(forum_id, status, approveType) {
             this.showConfirmation = true;
@@ -166,6 +154,7 @@ export default {
         deleteForum(forum_id, status) {
             this.showConfirmation = true;
             this.forum_id = forum_id;
+            this.status = status;
             this.confirmationType = status;
         },
         forums() {
@@ -186,12 +175,9 @@ export default {
                     axiosConfig
                 )
                 .then((res) => {
-                    // console.log("RESPONSE RECEIVED: ", res);
                     this.forumList = res.data.data;
                     this.adminStatus = res.data.isAdmin;
                     this.userId = res.data.user.id;
-                    // console.log(res.data.data);
-                    // this.closeModal();
                 })
                 .catch((err) => {
                     console.log("AXIOS ERROR: ", err);

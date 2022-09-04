@@ -26,7 +26,6 @@
 import axios from 'axios'
 
 export default {
-	name: 'HomeView',
 	data() {
 		return {
 			name: null,
@@ -38,7 +37,6 @@ export default {
 	},
 	methods: {
 		registerUser() {
-			// console.log(this.password !== this.re_password);
 			if (this.password !== this.re_password) {
 				this.passwordsNotMatch = true;
 			} else {
@@ -57,14 +55,13 @@ export default {
 
 				axios.post('http://localhost/Ascentic/laravel-backend/public/api/register', postData, axiosConfig)
 					.then((res) => {
-						console.log("RESPONSE RECEIVED: ", res);
+						alert('Successfully Registered');
+						this.$router.push({name: "login"});
 					})
 					.catch((err) => {
 						console.log("AXIOS ERROR: ", err);
 					})
 			}
-
-			console.log(this.passwordsNotMatch);
 		},
 		clearPasswordLabel() {
 			this.passwordsNotMatch = false;

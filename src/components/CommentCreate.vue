@@ -21,7 +21,6 @@ export default {
     data() {
         return {
             comment: null,
-            forum_id: null
         }
     },
     props: ['forum_id'],
@@ -45,7 +44,6 @@ export default {
 
             axios.post('http://localhost/Ascentic/laravel-backend/public/api/create-comment', postData, axiosConfig)
                 .then((res) => {
-                    console.log("RESPONSE RECEIVED: ", res);
                     this.closeComment();
                 })
                 .catch((err) => {

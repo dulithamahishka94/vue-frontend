@@ -54,12 +54,7 @@ export default {
                         axiosConfig
                     )
                     .then((res) => {
-                        console.log("Cofirmed");
-                        // console.log("RESPONSE RECEIVED: ", res);
-                        // this.forumList = res.data.data;
-                        console.log(res.data.data);
                         this.closeModal(true);
-                        //   this.showAlert = true;
                     })
                     .catch((err) => {
                         console.log("AXIOS ERROR: ", err);
@@ -84,12 +79,7 @@ export default {
                         axiosConfig
                     )
                     .then((res) => {
-                        console.log("deleted");
-                        // console.log("RESPONSE RECEIVED: ", res);
-                        // this.forumList = res.data.data;
-                        console.log(res.data.data);
                         this.closeModal(true);
-                        //   this.showAlert = true;
                     })
                     .catch((err) => {
                         console.log("AXIOS ERROR: ", err);
