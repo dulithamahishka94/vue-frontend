@@ -50,7 +50,7 @@ export default {
                 }
             };
 
-            axios.post('http://localhost/Ascentic/laravel-backend/public/api/login', postData, axiosConfig)
+            axios.post(process.env.VUE_APP_API_ENDPOINT + '/api/login', postData, axiosConfig)
                 .then((res) => {
                     if (res.data.data.status) {
                         this.$store.dispatch('addToken', res.data.data.token)
@@ -65,6 +65,9 @@ export default {
                     }
                 })
                 .catch((err) => {
+                    if (err.code == "ERR_BAD_REQUEST") {
+                        alert('Unauthorized access')
+                    }
                     console.log("AXIOS ERROR: ", err)
                 })
         }

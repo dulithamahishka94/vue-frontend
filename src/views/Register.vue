@@ -53,12 +53,16 @@ export default {
 					}
 				};
 
-				axios.post('http://localhost/Ascentic/laravel-backend/public/api/register', postData, axiosConfig)
+				axios.post(process.env.VUE_APP_API_ENDPOINT + '/api/register', postData, axiosConfig)
 					.then((res) => {
 						alert('Successfully Registered');
 						this.$router.push({name: "login"});
 					})
 					.catch((err) => {
+						if (err.code == "ERR_BAD_REQUEST") {
+							alert('Unauthorized access')
+						}
+
 						console.log("AXIOS ERROR: ", err);
 					})
 			}

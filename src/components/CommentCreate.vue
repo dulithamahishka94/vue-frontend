@@ -42,7 +42,7 @@ export default {
                 }
             };
 
-            axios.post('http://localhost/Ascentic/laravel-backend/public/api/create-comment', postData, axiosConfig)
+            axios.post(process.env.VUE_APP_API_ENDPOINT + '/api/create-comment', postData, axiosConfig)
                 .then((res) => {
                     this.closeComment();
                 })

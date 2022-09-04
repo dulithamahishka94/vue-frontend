@@ -49,7 +49,7 @@ export default {
 
                 axios
                     .post(
-                        "http://localhost/Ascentic/laravel-backend/public/api/approve",
+                        process.env.VUE_APP_API_ENDPOINT + "/api/approve",
                         postData,
                         axiosConfig
                     )
@@ -74,7 +74,7 @@ export default {
 
                 axios
                     .post(
-                        "http://localhost/Ascentic/laravel-backend/public/api/delete-forum",
+                        process.env.VUE_APP_API_ENDPOINT + "/api/delete-forum",
                         postData,
                         axiosConfig
                     )

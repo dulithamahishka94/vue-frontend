@@ -1,19 +1,19 @@
-# vue-frontend
+ 1. Clone this repository
+ 2. Go to the cloned folder and run `npm install`
+ 3. Create a copy of the .env.example file as .env
+ 4. Update VUE_APP_API_ENDPOINT with backend virtual host URL in .env file
+ 5. Run `npm run serve`
+ 6. Done
 
-## Project setup
-```
-npm install
-```
+**Login Credentials**
+Backend will provide two default users from the migration (1 admin user, 1 default user)
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+> Admin User
+> Email : admin@admin.com
+> Password : password
 
-### Compiles and minifies for production
-```
-npm run build
-```
+> Default User
+> Email : user@user.com
+> Password: password
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+Multiple default users can be created using the register page.

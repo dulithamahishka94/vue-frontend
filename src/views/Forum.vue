@@ -113,7 +113,7 @@ export default {
 
                 axios
                     .post(
-                        "http://localhost/Ascentic/laravel-backend/public/api/view-comments",
+                        process.env.VUE_APP_API_ENDPOINT + "/api/view-comments",
                         postData,
                         axiosConfig
                     )
@@ -170,7 +170,7 @@ export default {
 
             axios
                 .post(
-                    "http://localhost/Ascentic/laravel-backend/public/api/list",
+                    process.env.VUE_APP_API_ENDPOINT + "/api/list",
                     postData,
                     axiosConfig
                 )
@@ -180,6 +180,9 @@ export default {
                     this.userId = res.data.user.id;
                 })
                 .catch((err) => {
+                    if (err.code == "ERR_BAD_REQUEST") {
+                        alert('Unauthorized access')
+                    }
                     console.log("AXIOS ERROR: ", err);
                 });
         },
