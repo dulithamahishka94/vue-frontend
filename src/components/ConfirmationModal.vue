@@ -47,9 +47,15 @@ export default {
                     },
                 };
 
+                let method = 'approve'
+
+                if (!status) { // if status=false, reject api call should run.
+                    method = 'reject'
+                }
+
                 axios
                     .post(
-                        process.env.VUE_APP_API_ENDPOINT + "/api/approve",
+                        process.env.VUE_APP_API_ENDPOINT + "/api/" + method,
                         postData,
                         axiosConfig
                     )

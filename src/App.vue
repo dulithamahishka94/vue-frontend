@@ -5,7 +5,7 @@
 		<router-link to="/forum" v-if="$store.state.loggedIn">Forum |</router-link>
 		<button v-if="$store.state.loggedIn" @click="logOut" class="btn btn-danger">Logout</button>
 	</nav>
-	<h3>User : {{$store.state.name}}</h3>
+	<h3 v-if="$store.state.loggedIn">User : {{$store.state.name}}</h3>
 	<router-view/>
 </template>
 <script>
