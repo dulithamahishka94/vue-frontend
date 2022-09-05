@@ -10,7 +10,7 @@
                 <a href="#" class="btn-success btn create-forum" @click="toggleModal">Create Forum</a>
                 <div class="col-md-4">
                     <div class="input-group">
-                        <input type="text" class="form-control border-radius-none" placeholder="Search by title" v-model="searchText">
+                        <input type="text" class="form-control border-radius-none" placeholder="Search by title or user's name" v-model="searchText">
                         <div class="input-group-append">
                             <button class="btn btn-primary border-radius-none" type="button" @click="searchForums">Search</button>
                             <button class="btn btn-danger margin-right-25 border-radius-none" type="button" @click="forums(null)">X</button>
@@ -199,7 +199,7 @@ export default {
                 })
                 .catch((err) => {
                     if (err.code == "ERR_BAD_REQUEST") {
-                        alert('Unauthorized access')
+                        alert('Unauthorized access. Please login.')
                     }
                     console.log("AXIOS ERROR: ", err);
                 });
