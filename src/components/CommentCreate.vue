@@ -45,6 +45,7 @@ export default {
             axios.post(process.env.VUE_APP_API_ENDPOINT + '/api/create-comment', postData, axiosConfig)
                 .then((res) => {
                     this.closeComment()
+                    alert('Comment added')
 
                     if (res.data.response_code == 0) {
                         alert(res.data.data.exception)
