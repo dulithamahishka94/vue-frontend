@@ -4,10 +4,11 @@
         <!-- <h1>Login {{ $store.state.firstName }} {{ $store.state.lastName }}</h1> -->
         <form @submit.prevent="handleSubmit">
             <label>Email</label>
-            <input type="email" required v-model="email">
+            <input type="email" required v-model="email" @keypress="passwordsNotMatch=false">
 
             <label>Password</label>
-            <input type="password" required v-model="password">
+            <input type="password" required v-model="password" @keypress="passwordsNotMatch=false">
+            <label v-if="passwordsNotMatch" class="error">Unauthorized</label>
 
             <div class="submit">
                 <button class="btn btn-md btn-primary" @click.prevent="loginUser">Login</button>
@@ -20,19 +21,16 @@
 import axios from 'axios'
 
 export default {
-    name: 'HomeView',
     components: {},
     data() {
         return {
-            data: {
-                email: null,
-                password: null,
-                showLogin: true
-            }
+            email: null,
+            password: null,
+            showLogin: true,
+            passwordsNotMatch: false
         }
     },
     beforeCreate() {
-        console.log('state',this.$store.state.loggedIn);
         if (this.$store.state.loggedIn) {
             this.$router.push({name: "forum"});
         }
@@ -52,23 +50,29 @@ export default {
                 }
             };
 
-            axios.post('http://localhost/Ascentic/laravel-backend/public/api/login', postData, axiosConfig)
+            axios.post(process.env.VUE_APP_API_ENDPOINT + '/api/login', postData, axiosConfig)
                 .then((res) => {
                     if (res.data.data.status) {
-                        // console.log(res.data.data.token)
                         this.$store.dispatch('addToken', res.data.data.token)
                         this.$store.dispatch('setLoggedIn', true)
+                        this.$store.dispatch('setName', res.data.data.user.name)
                         this.$router.push({name: 'forum'})
-                        // console.log(this.$store.state.token)
+                    }
+
+                    // If username or password is wrong.
+                    if (res.data.response_code === 401) {
+                        this.passwordsNotMatch = true
                     }
                 })
                 .catch((err) => {
+                    if (err.code == "ERR_BAD_REQUEST") {
+                        alert('Unauthorized access')
+                    }
                     console.log("AXIOS ERROR: ", err)
                 })
         }
     },
     beforeCreate() {
-        console.log(this.$store.state.loggedIn);
         if (this.$store.state.loggedIn) {
             this.$router.push({name: 'forum'})
         }
@@ -133,5 +137,8 @@ input[type="checkbox"] {
     margin-top: 10px;
 }
 
+.error {
+	color: red;
+}
 
 </style>

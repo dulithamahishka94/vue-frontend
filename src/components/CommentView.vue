@@ -18,8 +18,6 @@
 export default {
     data() {
         return {
-            commentList: null,
-            forum_id: null,
         };
     },
     props: ["forum_id", "commentList"],
@@ -63,5 +61,9 @@ textarea {
 
 .user-name {
     font-weight: 600;
+}
+
+.hidden {
+    display: none;
 }
 </style>

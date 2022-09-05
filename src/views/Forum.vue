@@ -6,12 +6,16 @@
                     {{ alertMessage }}
                 </div>
             </div>
-            <div class="col-md-12">
-                <div class="col-md-7">
-                    <input type="text" class="form-control">
-                    <a href="#" class="btn-success btn btn-sm create-forum" @click="toggleModal">Create Forum</a>
-                </div>
-                <div class="col-md-5">
+            <div class="d-flex flex-row-reverse mt-5">
+                <a href="#" class="btn-success btn create-forum" @click="toggleModal">Create Forum</a>
+                <div class="col-md-4">
+                    <div class="input-group">
+                        <input type="text" class="form-control border-radius-none" placeholder="Search by title or user's name" v-model="searchText">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary border-radius-none" type="button" @click="searchForums">Search</button>
+                            <button class="btn btn-danger margin-right-25 border-radius-none" type="button" @click="forums(null)">X</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -78,34 +82,32 @@ export default {
             adminStatus: false,
             userId: null,
             showCommentView: false,
-            commentList: []
+            commentList: [],
+            searchText:  null
         };
     },
-    components: {ForumCreate, CommentCreate, Confirmation, CommentView},
+    components: { ForumCreate, CommentCreate, Confirmation, CommentView },
     beforeCreate() {
-        console.log('state',this.$store.state.loggedIn);
         if (!this.$store.state.loggedIn) {
             this.$router.push({name: "login"});
         }
     },
     mounted() {
-        this.forums();
+        this.forums(null);
     },
     methods: {
         toggleModal() {
             this.showModal = !this.showModal;
             this.forums();
-            console.log(this.showModal);
         },
         toggleComment(forum_id) {
             this.showComment = !this.showComment;
             this.forum_id = forum_id;
             this.forums();
-            console.log(this.forum_id);
         },
         toggleCommentView(forum_id) {
             this.showCommentView = !this.showCommentView;
-
+            this.hiddenClass = 'hidden'
             if (this.showCommentView) {
                 var postData = {
                     forum_id: forum_id,
@@ -121,14 +123,13 @@ export default {
 
                 axios
                     .post(
-                        "http://localhost/Ascentic/laravel-backend/public/api/view-comments",
+                        process.env.VUE_APP_API_ENDPOINT + "/api/view-comments",
                         postData,
                         axiosConfig
                     )
                     .then((res) => {
+                        this.hiddenClass = ''
                         this.commentList = res.data.data
-                        // console.log("RESPONSE RECEIVED: ", res.data.data);
-                        this.closeComment();
                     })
                     .catch((err) => {
                         console.log("AXIOS ERROR: ", err);
@@ -136,7 +137,6 @@ export default {
             }
             this.forum_id = forum_id;
             this.forums();
-            console.log(this.forum_id);
         },
         toggleConfirmation(confirmStatus) {
             this.showConfirmation = !this.showConfirmation;
@@ -154,8 +154,6 @@ export default {
             } else {
                 this.alertMessage = "Succesfully rejected";
             }
-
-            console.log('confirmation type ', this.confirmationType);
         },
         approveForum(forum_id, status, approveType) {
             this.showConfirmation = true;
@@ -166,10 +164,19 @@ export default {
         deleteForum(forum_id, status) {
             this.showConfirmation = true;
             this.forum_id = forum_id;
+            this.status = status;
             this.confirmationType = status;
         },
-        forums() {
-            var postData = {};
+        forums(search) {
+
+            // Search text to be removed when loading all forums or clicking x on search.
+            if (search == null) {
+                this.searchText = ''
+            }
+
+            var postData = {
+                search: search
+            };
 
             let axiosConfig = {
                 headers: {
@@ -181,22 +188,25 @@ export default {
 
             axios
                 .post(
-                    "http://localhost/Ascentic/laravel-backend/public/api/list",
+                    process.env.VUE_APP_API_ENDPOINT + "/api/list",
                     postData,
                     axiosConfig
                 )
                 .then((res) => {
-                    // console.log("RESPONSE RECEIVED: ", res);
                     this.forumList = res.data.data;
                     this.adminStatus = res.data.isAdmin;
                     this.userId = res.data.user.id;
-                    // console.log(res.data.data);
-                    // this.closeModal();
                 })
                 .catch((err) => {
+                    if (err.code == "ERR_BAD_REQUEST") {
+                        alert('Unauthorized access. Please login.')
+                    }
                     console.log("AXIOS ERROR: ", err);
                 });
         },
+        searchForums() {
+            this.forums(this.searchText)
+        }
     },
 };
 </script>
@@ -215,5 +225,13 @@ export default {
 
 .card-link-forum {
     margin: 0 10px 0 0;
+}
+
+.margin-right-25 {
+    margin-right: 25px;
+}
+
+.border-radius-none {
+    border-radius: 0 !important;
 }
 </style>

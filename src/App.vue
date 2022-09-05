@@ -5,10 +5,8 @@
 		<router-link to="/forum" v-if="$store.state.loggedIn">Forum |</router-link>
 		<button v-if="$store.state.loggedIn" @click="logOut" class="btn btn-danger">Logout</button>
 	</nav>
+	<h3 v-if="$store.state.loggedIn">User : {{$store.state.name}}</h3>
 	<router-view/>
-	<!-- <Login /> -->
-
-	<!-- <ForumCreate /> -->
 </template>
 <script>
 
@@ -18,8 +16,8 @@ export default {
 	},
 	methods: {
 		logOut() {
-      this.$store.commit('SET_LOGGED_IN', false)
-      this.$store.commit('UPDATE_API_TOKEN', '')
+			this.$store.commit('SET_LOGGED_IN', false)
+			this.$store.commit('UPDATE_API_TOKEN', '')
 			this.$router.push({name: 'login'})
 		}
 	}

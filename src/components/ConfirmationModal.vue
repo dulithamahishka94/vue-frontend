@@ -47,19 +47,20 @@ export default {
                     },
                 };
 
+                let method = 'approve'
+
+                if (!status) { // if status=false, reject api call should run.
+                    method = 'reject'
+                }
+
                 axios
                     .post(
-                        "http://localhost/Ascentic/laravel-backend/public/api/approve",
+                        process.env.VUE_APP_API_ENDPOINT + "/api/" + method,
                         postData,
                         axiosConfig
                     )
                     .then((res) => {
-                        console.log("Cofirmed");
-                        // console.log("RESPONSE RECEIVED: ", res);
-                        // this.forumList = res.data.data;
-                        console.log(res.data.data);
                         this.closeModal(true);
-                        //   this.showAlert = true;
                     })
                     .catch((err) => {
                         console.log("AXIOS ERROR: ", err);
@@ -79,17 +80,12 @@ export default {
 
                 axios
                     .post(
-                        "http://localhost/Ascentic/laravel-backend/public/api/delete-forum",
+                        process.env.VUE_APP_API_ENDPOINT + "/api/delete-forum",
                         postData,
                         axiosConfig
                     )
                     .then((res) => {
-                        console.log("deleted");
-                        // console.log("RESPONSE RECEIVED: ", res);
-                        // this.forumList = res.data.data;
-                        console.log(res.data.data);
                         this.closeModal(true);
-                        //   this.showAlert = true;
                     })
                     .catch((err) => {
                         console.log("AXIOS ERROR: ", err);

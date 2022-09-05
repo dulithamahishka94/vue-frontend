@@ -45,13 +45,13 @@ export default {
                 }
             };
 
-            axios.post('http://localhost/Ascentic/laravel-backend/public/api/create-forum', postData, axiosConfig)
+            axios.post(process.env.VUE_APP_API_ENDPOINT + '/api/create-forum', postData, axiosConfig)
                 .then((res) => {
-                    console.log("RESPONSE RECEIVED: ", res);
                     this.closeModal();
+                    alert('Forum Succesfully Created')
                 })
                 .catch((err) => {
-                    console.log("AXIOS ERROR: ", err);
+                    console.log("AXIOS ERROR: ", err)
                 })
         }
     }
