@@ -130,9 +130,13 @@ export default {
                     .then((res) => {
                         this.hiddenClass = ''
                         this.commentList = res.data.data
+
+                        if (res.data.response_code == 0) {
+							alert(res.data.data.exception)
+						}
                     })
                     .catch((err) => {
-                        console.log("AXIOS ERROR: ", err);
+                        console.log("AXIOS ERROR: ", err)
                     });
             }
             this.forum_id = forum_id;
@@ -196,12 +200,16 @@ export default {
                     this.forumList = res.data.data;
                     this.adminStatus = res.data.isAdmin;
                     this.userId = res.data.user.id;
+
+                    if (res.data.response_code == 0) {
+                        alert(res.data.data.exception)
+                    }
                 })
                 .catch((err) => {
                     if (err.code == "ERR_BAD_REQUEST") {
                         alert('Unauthorized access. Please login.')
                     }
-                    console.log("AXIOS ERROR: ", err);
+                    console.log("AXIOS ERROR: ", err)
                 });
         },
         searchForums() {

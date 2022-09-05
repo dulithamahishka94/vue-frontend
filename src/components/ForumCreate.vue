@@ -49,6 +49,10 @@ export default {
                 .then((res) => {
                     this.closeModal();
                     alert('Forum Succesfully Created')
+
+                    if (res.data.response_code == 0) {
+                        alert(res.data.data.exception)
+                    }
                 })
                 .catch((err) => {
                     console.log("AXIOS ERROR: ", err)

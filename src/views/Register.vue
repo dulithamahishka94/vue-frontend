@@ -55,15 +55,20 @@ export default {
 
 				axios.post(process.env.VUE_APP_API_ENDPOINT + '/api/register', postData, axiosConfig)
 					.then((res) => {
-						alert('Successfully Registered');
-						this.$router.push({name: "login"});
+						if (res.data.response_code == 0) {
+							alert(res.data.data.exception)
+						} else {
+							alert('Successfully Registered')
+						}
+
+						this.$router.push({name: "login"})
 					})
 					.catch((err) => {
 						if (err.code == "ERR_BAD_REQUEST") {
 							alert('Unauthorized access')
 						}
 
-						console.log("AXIOS ERROR: ", err);
+						console.log("AXIOS ERROR: ", err)
 					})
 			}
 		},

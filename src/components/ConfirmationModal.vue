@@ -60,10 +60,14 @@ export default {
                         axiosConfig
                     )
                     .then((res) => {
-                        this.closeModal(true);
+                        this.closeModal(true)
+
+                        if (res.data.response_code == 0) {
+                            alert(res.data.data.exception)
+                        }
                     })
                     .catch((err) => {
-                        console.log("AXIOS ERROR: ", err);
+                        console.log("AXIOS ERROR: ", err)
                     });
             } else {
                 var postData = {
@@ -85,10 +89,14 @@ export default {
                         axiosConfig
                     )
                     .then((res) => {
-                        this.closeModal(true);
+                        this.closeModal(true)
+
+                        if (res.data.response_code == 0) {
+                            alert(res.data.data.exception)
+                        }
                     })
                     .catch((err) => {
-                        console.log("AXIOS ERROR: ", err);
+                        console.log("AXIOS ERROR: ", err)
                     });
             }
         },

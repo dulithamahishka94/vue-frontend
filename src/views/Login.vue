@@ -63,10 +63,16 @@ export default {
                     if (res.data.response_code === 401) {
                         this.passwordsNotMatch = true
                     }
+
+                    if (res.data.response_code == 0) {
+                        alert(res.data.data.exception)
+                    }
                 })
                 .catch((err) => {
                     if (err.code == "ERR_BAD_REQUEST") {
                         alert('Unauthorized access')
+                    } else {
+                        alert(err.message)
                     }
                     console.log("AXIOS ERROR: ", err)
                 })

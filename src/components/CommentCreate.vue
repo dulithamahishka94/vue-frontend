@@ -44,10 +44,14 @@ export default {
 
             axios.post(process.env.VUE_APP_API_ENDPOINT + '/api/create-comment', postData, axiosConfig)
                 .then((res) => {
-                    this.closeComment();
+                    this.closeComment()
+
+                    if (res.data.response_code == 0) {
+                        alert(res.data.data.exception)
+                    }
                 })
                 .catch((err) => {
-                    console.log("AXIOS ERROR: ", err);
+                    console.log("AXIOS ERROR: ", err)
                 })
         }
     }
