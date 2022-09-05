@@ -9,11 +9,11 @@
 Backend will provide two default users from the migration (1 admin user, 1 default user)
 
 > Admin User
-> Email : admin@admin.com
+> Email : admin@admin.com    
 > Password : password
 
 > Default User
-> Email : user@user.com
+> Email : user@user.com    
 > Password: password
 
 Multiple default users can be created using the register page.
