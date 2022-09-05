@@ -6,8 +6,17 @@
                     {{ alertMessage }}
                 </div>
             </div>
-            <div class="col-md-12">
-                <a href="#" class="btn-success btn btn-sm create-forum" @click="toggleModal">Create Forum</a>
+            <div class="d-flex flex-row-reverse mt-5">
+                <a href="#" class="btn-success btn create-forum" @click="toggleModal">Create Forum</a>
+                <div class="col-md-4">
+                    <div class="input-group">
+                        <input type="text" class="form-control border-radius-none" placeholder="Search by title" v-model="searchText">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary border-radius-none" type="button" @click="searchForums">Search</button>
+                            <button class="btn btn-danger margin-right-25 border-radius-none" type="button" @click="forums(null)">X</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="container">
@@ -73,7 +82,8 @@ export default {
             adminStatus: false,
             userId: null,
             showCommentView: false,
-            commentList: []
+            commentList: [],
+            searchText:  null
         };
     },
     components: { ForumCreate, CommentCreate, Confirmation, CommentView },
@@ -83,7 +93,7 @@ export default {
         }
     },
     mounted() {
-        this.forums();
+        this.forums(null);
     },
     methods: {
         toggleModal() {
@@ -157,8 +167,16 @@ export default {
             this.status = status;
             this.confirmationType = status;
         },
-        forums() {
-            var postData = {};
+        forums(search) {
+
+            // Search text to be removed when loading all forums or clicking x on search.
+            if (search == null) {
+                this.searchText = ''
+            }
+
+            var postData = {
+                search: search
+            };
 
             let axiosConfig = {
                 headers: {
@@ -186,6 +204,9 @@ export default {
                     console.log("AXIOS ERROR: ", err);
                 });
         },
+        searchForums() {
+            this.forums(this.searchText)
+        }
     },
 };
 </script>
@@ -204,5 +225,13 @@ export default {
 
 .card-link-forum {
     margin: 0 10px 0 0;
+}
+
+.margin-right-25 {
+    margin-right: 25px;
+}
+
+.border-radius-none {
+    border-radius: 0 !important;
 }
 </style>
